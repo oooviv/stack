@@ -2,123 +2,104 @@ package main
 
 import "fmt"
 
+const size int = 4
+
 type stack struct {
-	array []int
+	front int
+	array [size]int
+	reare int
 }
 
+// IsEmpty возвращает true если стек пустой
 func (s *stack) IsEmpty() bool {
-	return len(s.array) == 0
+	return s.front == -1
 }
 
-// func (s *stack) IsFull() bool {
-// 	return len(s.array) == cap(s.array)
-// }
+// IsFull возвращает true если стек полный
+func (s *stack) IsFull() bool {
+	return s.reare == size-1
+}
 
-func (s *stack) Peek() (int, bool) {
-	if s.IsEmpty() {
-		return 0, false
+func (s *stack) Push(v int) bool {
+	if s.IsFull() {
+		return false
 	}
-	return s.array[len(s.array)-1], true
-}
-
-func (s *stack) Push(value int) {
-	// if !s.IsFull() {
-	// 	s.array = append(s.array, value)
-	// }
-	s.array = append(s.array, value)
+	if s.front == -1 {
+		s.front = 0
+		s.reare++
+		s.array[s.reare] = v
+	} else {
+		s.reare++
+		s.array[s.reare] = v
+	}
+	return true
 }
 
 func (s *stack) Pop() (int, bool) {
+	value := 0
 	if s.IsEmpty() {
 		return 0, false
 	}
-	value := s.array[len(s.array)-1]
-	s.array = s.array[:len(s.array)-1]
+	if s.reare == 0 {
+		value = s.array[s.reare]
+		s.front = -1
+		s.reare = -1
+	} else {
+		value = s.array[s.reare]
+		s.reare--
+	}
 	return value, true
 }
 
-func main() {
+func (s *stack) Peek() int {
+	value := 0
+	if s.IsEmpty() {
+		return value
+	}
+	value = s.array[s.reare]
+	return value
+}
 
-	st := stack{
-		array: make([]int, 0, 10),
+func main() {
+	s := stack{
+		front: -1,
+		array: [size]int{},
+		reare: -1,
 	}
 	fmt.Println()
-	st.Push(0)
-	st.Push(1)
-	st.Push(2)
-	st.Push(3)
-	st.Push(4)
-	st.Push(5)
-	st.Push(6)
-	st.Push(7)
-	st.Push(8)
-	st.Push(9)
-	fmt.Println(st.array)
-	if v, ok := st.Peek(); ok {
-		fmt.Println("Peek -->", v)
+	fmt.Println(s.Peek())
+	if s.Push(1) {
+		fmt.Println("Added:", 1)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
+	if s.Push(2) {
+		fmt.Println("Added:", 2)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
+	if s.Push(3) {
+		fmt.Println("Added:", 3)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
+	if s.Push(4) {
+		fmt.Println("Added:", 4)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
+	if s.Push(5) {
+		fmt.Println("Added:", 5)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
-	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
-	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
-	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
-	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
-	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
-	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
-	}
+	fmt.Println(s.Peek())
 	fmt.Println()
-	st.Push(0)
-	st.Push(1)
-	st.Push(2)
-	st.Push(3)
-	st.Push(4)
-	st.Push(5)
-	st.Push(6)
-	st.Push(7)
-	st.Push(8)
-	st.Push(9)
-	st.Push(10)
-	st.Push(11)
-	st.Push(12)
-	fmt.Println(st.array)
-	if v, ok := st.Peek(); ok {
-		fmt.Println("Peek -->", v)
+	if j, ok := s.Pop(); ok {
+		fmt.Println("Deleted:", j)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
+	if j, ok := s.Pop(); ok {
+		fmt.Println("Deleted:", j)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
+	fmt.Println(s.Peek())
+	fmt.Println()
+	if s.Push(10) {
+		fmt.Println("Added:", 10)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
+	fmt.Println(s.Peek())
+	if s.Push(20) {
+		fmt.Println("Added:", 20)
 	}
-	if v, ok := st.Pop(); ok {
-		fmt.Println("Pop -->", v)
-	}
+	fmt.Println(s.Peek())
 	fmt.Println()
 }
