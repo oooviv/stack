@@ -92,4 +92,15 @@ func main() {
 		fmt.Println("Added:", 5)
 	}
 	fmt.Println(s.array)
+	/*Println
+	Added: 1
+	Added: 2
+	Added: 3
+	Added: 4
+	[1 2 3 4]
+	Deleted: 4
+	Deleted: 3
+	Deleted: 2
+	Added: 5
+	[1 5 0 0]*/
 }
