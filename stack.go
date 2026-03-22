@@ -5,69 +5,63 @@ import "fmt"
 const size int = 4
 
 type stack struct {
-	front int
+	left  int
+	right int
 	array [size]int
-	reare int
 }
 
-// IsEmpty возвращает true если стек пустой
-func (s *stack) IsEmpty() bool {
-	return s.front == -1
+func (s *stack) isEmpty() bool {
+	return s.left == -1
 }
 
-// IsFull возвращает true если стек полный
-func (s *stack) IsFull() bool {
-	return s.reare == size-1
+func (s *stack) isFull() bool {
+	return s.right == size-1
 }
 
 func (s *stack) Push(v int) bool {
-	if s.IsFull() {
+	if s.isFull() {
 		return false
 	}
-	if s.front == -1 {
-		s.front = 0
-		s.reare++
-		s.array[s.reare] = v
-	} else {
-		s.reare++
-		s.array[s.reare] = v
+	if s.left == -1 {
+		s.left = 0
 	}
+	s.right++
+	s.array[s.right] = v
 	return true
 }
 
 func (s *stack) Pop() (int, bool) {
 	value := 0
-	if s.IsEmpty() {
+	if s.isEmpty() {
 		return 0, false
 	}
-	if s.reare == 0 {
-		value = s.array[s.reare]
-		s.front = -1
-		s.reare = -1
+	if s.left == s.right {
+		value = s.array[s.right]
+		s.array[s.right] = 0
+		s.left = -1
+		s.right = -1
 	} else {
-		value = s.array[s.reare]
-		s.reare--
+		value = s.array[s.right]
+		s.array[s.right] = 0
+		s.right--
 	}
 	return value, true
 }
 
-func (s *stack) Peek() int {
-	value := 0
-	if s.IsEmpty() {
-		return value
+func (s *stack) Peek() (int, bool) {
+	if s.isEmpty() {
+		return 0, false
 	}
-	value = s.array[s.reare]
-	return value
+	return s.array[s.right], true
 }
 
 func main() {
 	s := stack{
-		front: -1,
-		array: [size]int{},
-		reare: -1,
+		left:  -1,
+		right: -1,
 	}
-	fmt.Println()
-	fmt.Println(s.Peek())
+	_ = s
+
 	if s.Push(1) {
 		fmt.Println("Added:", 1)
 	}
@@ -83,23 +77,19 @@ func main() {
 	if s.Push(5) {
 		fmt.Println("Added:", 5)
 	}
-	fmt.Println(s.Peek())
-	fmt.Println()
-	if j, ok := s.Pop(); ok {
-		fmt.Println("Deleted:", j)
+	fmt.Println(s.array)
+
+	if v, ok := s.Pop(); ok {
+		fmt.Println("Deleted:", v)
 	}
-	if j, ok := s.Pop(); ok {
-		fmt.Println("Deleted:", j)
+	if v, ok := s.Pop(); ok {
+		fmt.Println("Deleted:", v)
 	}
-	fmt.Println(s.Peek())
-	fmt.Println()
-	if s.Push(10) {
-		fmt.Println("Added:", 10)
+	if v, ok := s.Pop(); ok {
+		fmt.Println("Deleted:", v)
 	}
-	fmt.Println(s.Peek())
-	if s.Push(20) {
-		fmt.Println("Added:", 20)
+	if s.Push(5) {
+		fmt.Println("Added:", 5)
 	}
-	fmt.Println(s.Peek())
-	fmt.Println()
+	fmt.Println(s.array)
 }
