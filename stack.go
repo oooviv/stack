@@ -2,49 +2,36 @@ package main
 
 import "fmt"
 
-const size int = 4
+const size int = 3
 
+// LIFO
 type stack struct {
-	left  int
-	right int
+	ptr   int
 	array [size]int
 }
 
 func (s *stack) isEmpty() bool {
-	return s.left == -1
+	return s.ptr == -1
 }
 
 func (s *stack) isFull() bool {
-	return s.right == size-1
+	return s.ptr == (size - 1)
 }
 
-func (s *stack) Push(v int) bool {
+func (s *stack) Push(value int) {
 	if s.isFull() {
-		return false
+		return
 	}
-	if s.left == -1 {
-		s.left = 0
-	}
-	s.right++
-	s.array[s.right] = v
-	return true
+	s.ptr++
+	s.array[s.ptr] = value
 }
 
 func (s *stack) Pop() (int, bool) {
-	value := 0
 	if s.isEmpty() {
 		return 0, false
 	}
-	if s.left == s.right {
-		value = s.array[s.right]
-		s.array[s.right] = 0
-		s.left = -1
-		s.right = -1
-	} else {
-		value = s.array[s.right]
-		s.array[s.right] = 0
-		s.right--
-	}
+	value := s.array[s.ptr]
+	s.ptr--
 	return value, true
 }
 
@@ -52,55 +39,29 @@ func (s *stack) Peek() (int, bool) {
 	if s.isEmpty() {
 		return 0, false
 	}
-	return s.array[s.right], true
+	return s.array[s.ptr], true
 }
 
 func main() {
 	s := stack{
-		left:  -1,
-		right: -1,
+		ptr:   -1,
+		array: [size]int{},
 	}
-	_ = s
-
-	if s.Push(1) {
-		fmt.Println("Added:", 1)
-	}
-	if s.Push(2) {
-		fmt.Println("Added:", 2)
-	}
-	if s.Push(3) {
-		fmt.Println("Added:", 3)
-	}
-	if s.Push(4) {
-		fmt.Println("Added:", 4)
-	}
-	if s.Push(5) {
-		fmt.Println("Added:", 5)
-	}
+	s.Push(1)
+	s.Push(2)
+	s.Push(3)
+	s.Push(4)
 	fmt.Println(s.array)
-
 	if v, ok := s.Pop(); ok {
-		fmt.Println("Deleted:", v)
-	}
-	if v, ok := s.Pop(); ok {
-		fmt.Println("Deleted:", v)
+		_ = v
 	}
 	if v, ok := s.Pop(); ok {
-		fmt.Println("Deleted:", v)
+		_ = v
 	}
-	if s.Push(5) {
-		fmt.Println("Added:", 5)
+	if v, ok := s.Pop(); ok {
+		_ = v
 	}
+	s.Push(4)
+	s.Push(4)
 	fmt.Println(s.array)
-	/*Println
-	Added: 1
-	Added: 2
-	Added: 3
-	Added: 4
-	[1 2 3 4]
-	Deleted: 4
-	Deleted: 3
-	Deleted: 2
-	Added: 5
-	[1 5 0 0]*/
 }
